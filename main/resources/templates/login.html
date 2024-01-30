@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f1e8; 
+            color: #3e2723;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #fff; 
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4e342e; 
+            
+            }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #8d6e63;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        button {
+            background-color: #8d6e63; 
+            color: #fff; 
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: #4e342e; 
+        }
+
+        .error-message {
+            color: #b71c1c;
+            margin-top: 15px;
+        }
+
+        .cute-design {
+            max-width: 50%;
+            height: auto;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+<img src="../static/img/cute-coffee.png" th:src="@{/img/cute-coffee.png}" alt="Coffee Shop Logo" class="cute-design">
+    <form method="post" th:action="@{/login}">
+        <label for="username">Customer Username</label>
+        <input type="text" id="username" name="username" required>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+        <div class="action-buttons">
+            <button type="submit">Log In</button><br>
+            Don't have an account with us yet?
+            <a href="/register">
+                <button type="button">Sign Up Here!</button>
+            </a>
+        </div>
+    </form>
+    <div th:if="${param.error}" class="error-message">
+        Wrong username or password. Please try again.
+    </div>
+
+</body>
+
+</html>

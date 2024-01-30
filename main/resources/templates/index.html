@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafe</title>
+    
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f1e8; 
+            color: #3e2723; 
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #4e342e; 
+            margin-bottom: 80px;
+            font-size: 500%;
+        }
+
+        a {
+            text-decoration: none;
+            color: #8d6e63; 
+            margin: 0 15px;
+            padding: 10px 15px;
+            border: 2px solid #8d6e63; 
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        a:hover {
+            background-color: #8d6e63; 
+            color: #fff; 
+        }
+
+        section {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .welcome-text {
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
+            font-weight: bold; 
+            color: #000; 
+        }
+
+      img {
+   		 	max-width: 100%;
+    		height: auto;
+    		margin-top: 20px;
+    		margin-bottom: 20px;
+    		margin-left: 20px; 
+}
+    </style>
+</head>
+
+<body>
+
+    <h1>Coffee Shop</h1>
+  
+    <div>
+        <a href="/login">Login</a>
+         <a href="/register">Sign Up</a>
+    </div>
+   
+    <section>
+        <div class="welcome-text">
+            <p>Discover the finest selection of coffee in the comfort of your home.</p>
+            <p>Explore our menu and indulge in the <em>rich flavors</em> of quality coffee.</p>
+        </div>
+
+        <img src="../static/img/logo.png" th:src="@{/img/coffeelogo.png}" alt="Coffee Shop Logo"/>
+
+    </section>
+   
+    
+<br><br><br>
+      <footer th:replace="fragments/footer.html :: footer"></footer>
+
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header</title>
+
+    <style>
+  
+        .menu span {
+            margin-right: 10px; 
+        }
+
+        .menu-admin {
+            background-color: #8d6e63; 
+            padding: 10px;
+            display: flex;
+            justify-content: space-around; 
+            color: #fff
+        }
+
+        .menu-admin a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .menu {
+            background-color: #8d6e63; 
+            padding: 10px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .menu a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .menu a:hover {
+            color: #4e342e; 
+        }
+    </style>
+</head>
+<body>
+  
+   <div th:if="${isAdmin}" class="menu-admin">
+        <span><a href="/secure/menu">Café Menu</a></span>
+        <span><a href="/secure/cart">My Cart</a></span>
+        <span><a href="/inventory/manageInventory">Manage Café Inventory</a></span>
+        <span><a href="/logout">Logout</a></span>
+    </div>
+
+    <div th:unless="${isAdmin}" class="menu">
+        <span><a href="/secure/menu">Café Menu</a></span>
+        <span><a href="/secure/cart">My Cart</a></span>
+        <span><a href="/logout">Logout</a></span>
+    </div>
+
+</body>
+
+
+</body>
+</html>
+

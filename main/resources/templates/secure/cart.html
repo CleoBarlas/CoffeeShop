@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f1e8;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #4e342e; 
+        }
+
+        nav {
+            background-color: #8d6e63; 
+            padding: 10px;
+            width: calc(100% - 20px); 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            justify-content: flex-end;
+            display: flex;
+            margin: 0 10px; 
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+            margin-left: 20px; 
+            margin-right: 20px; 
+        }
+
+        nav a:hover {
+            color: #4e342e;
+            }        
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #d4c0ad;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #8d6e63;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fff;
+        }
+
+        .quantity-actions,
+        .actions-column {
+            text-align: center;
+        }
+
+        input[type="number"] {
+            width: 40px;
+            text-align: center;
+            border: 1px solid #8d6e63;
+            border-radius: 3px;
+        }
+
+        .update-button,
+        .delete-button,
+        .checkout-button,
+        .continue-shopping-button {
+            background-color: #8d6e63;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none; 
+            display: inline-block; 
+            margin-right: 10px; 
+        }
+
+        .update-button:hover,
+        .delete-button:hover,
+        .checkout-button:hover,
+        .continue-shopping-button:hover {
+            background-color: #6d4c41;
+        }
+
+        .total-price {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #4e342e;
+        }
+
+        .buttons-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .empty-cart-message {
+            text-align: center;
+            margin-top: 20px;
+            color: #795548;
+        }
+
+        h1 img {
+            width: 100px; 
+            height: auto; 
+            margin: 0 5px; 
+        }
+        .menu span {
+            margin-right: 10px; 
+        }
+
+        .menu-admin {
+            background-color: #8d6e63; 
+            padding: 10px;
+            display: flex;
+            justify-content: flex-end; 
+            color: #fff; 
+            width: 100%;
+        }
+
+        .menu-admin a {
+            text-decoration: none;
+            color: #fff; 
+            font-weight: bold;
+            margin-left: 20px; 
+            margin-right: 20px; 
+            
+        }
+
+        .menu {
+            background-color: #8d6e63; 
+            padding: 10px;
+            display: flex;
+            justify-content: flex-end; 
+            width: 100%;
+        }
+
+        .menu a {
+            text-decoration: none;
+            color: #fff; 
+            font-weight: bold;
+            margin-left: 20px; 
+            margin-right: 20px; 
+        }
+
+        .menu a:hover {
+            color: #4e342e; 
+        }
+    </style>
+</head>
+ 
+<body>
+
+   <header th:insert="fragments/header.html :: header"></header><br>
+	
+	<div th:replace="${isAdmin} ? ~{fragments/navbar.html :: div.menu-admin} : ~{fragments/navbar.html ::div.menu}"></div>
+    
+   
+    <div>
+    <th:block th:if="${not #lists.isEmpty(cart)}">
+        <form method="post" th:action="@{/secure/updateCart}">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="cartItem, cartIndex : ${cart}">
+                        <td th:text="${cartItem.name}">Product Name</td>
+                        <td th:text="${cartItem.price}">Price</td>
+                        <td class="quantity-actions-container">
+                            <form method="post" th:action="@{/secure/updateCart}">
+                                <input type="number" name="quantity" th:value="${cartItem.quantity}" min="1" />
+                                <input type="hidden" name="id" th:value="${cartItem.id}" />
+                                <button type="submit" class="update-button">Update</button>
+                            </form>
+                        </td>
+                        <td class="actions-column">
+                            <form method="post" th:action="@{/secure/deleteItem}">
+                                <input type="hidden" name="id" th:value="${cartItem.id}" />
+                                <button type="submit" class="delete-button">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+
+        <div class="total-price">
+            Total Price: $<span th:text="${totalPrice}"></span>
+        </div>
+
+        <div class="buttons-container">
+            <a href="/secure/menu" class="continue-shopping-button">Continue Shopping</a>
+            <form method="post" th:action="@{/secure/checkout}"><br><br>
+                <button type="submit" class="checkout-button">Checkout</button>
+            </form>
+        </div>
+    </th:block>
+<br><br>
+    <div class="empty-cart-message" th:if="${#lists.isEmpty(cart)}">
+        <p>Your cart is empty.</p>
+        <a href="/secure/menu" class="continue-shopping-button">Continue Shopping</a>
+    </div>
+    <br><br><br>
+
+        <footer th:replace="fragments/footer.html :: footer"></footer>
+        
+</body>
+
+</html>
+
+
+
+
+
+
+

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Coffee Shop</title>
+
+    <style>
+		
+		body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f1e8; 
+            color: #3e2723; 
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+      
+        h1 {
+            color: #4e342e; 
+        }
+
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .book-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            width: 300px;
+            text-align: center;
+        }
+
+        .book-container a {
+            text-decoration: none;
+        }
+
+        h2 {
+            color: #4e342e; 
+            margin-top: 0px;
+        }
+        
+        h2 a {
+            color: #8d6e63; 
+            text-decoration: underline;
+        }
+
+        h2 a:hover {
+            color: #4e342e; 
+        }
+    
+        
+        form {
+    	margin-top: 20px;
+    	text-align: center;
+			}
+
+		select {
+    	padding: 10px;
+    	font-size: 16px;
+    	margin-right: 10px;
+			}
+
+		input[type="submit"] {
+    	padding: 10px;
+    	background-color: #8d6e63; 
+   		color: #fff;
+   		border: none;
+    	border-radius: 5px;
+    	cursor: pointer;
+    	transition: background-color 0.3s;
+		}
+
+		input[type="submit"]:hover {
+    	background-color: #4e342e; 
+			}
+
+
+        .menu span {
+            margin-right: 10px; 
+            }
+            
+        .menu-admin {
+            background-color: #8d6e63; 
+            padding: 10px;
+            display: flex;
+            justify-content: flex-end; 
+            color: #fff; 
+            width: 100%;
+        }
+
+        .menu-admin a {
+            text-decoration: none;
+            color: #fff; 
+            font-weight: bold;
+            margin-left: 20px; 
+            margin-right: 20px; 
+            
+        }
+
+        .menu {
+            background-color: #8d6e63; 
+            padding: 10px;
+            display: flex;
+            justify-content: flex-end; 
+            width: 100%;
+        }
+
+        .menu a {
+            text-decoration: none;
+            color: #fff; 
+            font-weight: bold;
+            margin-left: 20px;
+            margin-right: 20px; 
+        }
+
+        .menu a:hover {
+            color: #4e342e; 
+        }
+    </style>
+</head>
+ 
+<body>
+	
+	<header th:insert="fragments/header.html :: header"></header><br>
+	
+	<div th:replace="${isAdmin} ? ~{fragments/navbar.html :: div.menu-admin} : ~{fragments/navbar.html ::div.menu}"></div>
+   
+    <div> 
+     <form method="post" action="" th:action="@{/secure/filter}" th:object="${product}">
+   <h2>Filter By Category</h2> <select th:field="*{category}">
+		<option value="ALL">All</option>
+        <option value="Hot">Hot Drinks</option>
+            <option value="Cold">Cold Drinks</option>
+            <option value="Dessert">Desserts and Sandwiches</option>
+    </select>
+    <input type="submit" value="Filter" />
+</form>
+<br><br>
+ <h2><a href="/specials">Click Here to View our Holiday Specials</a></h2>
+</div>
+    <div class="container">
+        <div th:each="product : ${allProducts}" class="book-container">
+		<td><img  id="product-img" height="150px" th:src="@{'/img/' + ${product.id} + '.png'}" /></td>
+            <a th:href="@{/secure/details/{id}(id=${product.id})}">
+                <h2 th:text="${product.name}">Product</h2>
+            </a>
+        </div>
+    </div>   
+    <footer th:replace="fragments/footer.html :: footer"></footer>
+
+</body>
+
+</html>

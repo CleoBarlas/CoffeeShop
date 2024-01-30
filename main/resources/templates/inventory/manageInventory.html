@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookstore Inventory Management</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f1e8; 
+            color: #3e2723; 
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        hr {
+            width: 80%;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border-color: #8d6e63; 
+        }
+
+        h1, h2 {
+            color: #4e342e; 
+        }
+
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            margin-left: 90px;
+        }
+
+        th, td {
+            border: 1px solid #8d6e63; 
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #8d6e63; 
+            color: #fff; 
+            }
+
+        #allProducts {
+            text-align: center; 
+        }
+
+        a {
+            text-decoration: none;
+            color: #8d6e63; 
+            margin-top: 20px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        form {
+            width: 80%;
+            margin-top: 20px;
+        }
+
+        input[type="text"], input[type="submit"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #8d6e63; 
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #8d6e63; 
+            color: #fff; 
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #4e342e; 
+        }
+    </style>
+</head>
+
+<body>
+    <hr>
+
+    <h1>Product Inventory</h1>
+    <div id="allProducts">
+        <table th:if="${allProducts != null AND allProducts != ''}">
+            <tr>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            <tr th:each="p : ${allProducts}">
+                <td th:text="${p.id}"></td>
+                <td th:text="${p.name}"></td>
+                <td th:text="${p.category}"></td>
+                <td th:text="${p.description}"></td>
+                <td th:text="${p.price}"></td>
+                <td><a th:href="@{'/inventory/manageInventory/editProduct/'} + ${p.id}">Edit</a></td>
+                <td><a th:href="@{'/inventory/manageInventory/deleteProduct/'} + ${p.id}">Delete</a></td>
+            </tr>
+        </table>
+    </div>
+
+    <h2>Add Products</h2>
+    <form method="post" action="/inventory/addProduct" th:object="${product}">
+        <input type="hidden" name="id" th:field="*{id}" />
+
+        <label for="name">Product Name:</label>
+        <input type="text" id="name" name="name" th:field="*{name}" />
+
+        <label for="category">Category:</label>
+        <input type="text" id="category" name="category" th:field="*{category}" />
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" th:field="*{description}" style="height: 150px;"></textarea>
+
+        <label for="price">Price:</label>
+        <input type="text" id="price" name="price" th:field="*{price}" />
+
+        <input type="submit" value="Submit" />
+    </form>
+    <br>
+
+    <a href="/secure/menu">Go Back To Cafe Menu Page</a>
+    <br><br><br>
+
+    
+      <footer th:replace="fragments/footer.html :: footer"></footer>
+</body>
+
+</html>
